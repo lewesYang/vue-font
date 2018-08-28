@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>注册</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
   <style>
     html {
       width: 100%;
@@ -33,12 +34,19 @@
 
     .regist-box {
       position: absolute;
-      height: 240px;
-      width: 30%;
+      height: 260px;
+      width: 450px;
       background-color: #fff;
       top: 20%;
-      left: 35%;
+      left: 50%;
+      transform: translateX(-50%);
       box-shadow: 1px 1px 1px 1px #888888;
+      text-align: center;
+    }
+
+    .regist-box>h3 {
+      margin-top: 60px;
+      margin-bottom: 10px;
     }
 
     input {
@@ -48,15 +56,62 @@
 
     .reg-btn {
       text-align: center;
+      padding-top: 5px;
       width: 100px;
       height: 30px;
-      border: solid 1px green;
-      background-color: green;
-      box-shadow: 1px 1px 1px 1px #888888;
+      border: 1px solid #d1d5da;
+      background-color: #fff;
+      box-shadow: 1px 1px #d1d5da;
+      display: inline-block;
+      margin-top: 10px;
     }
 
     .reg-btn:hover {
       cursor: pointer;
+    }
+
+    .in-line {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .phone-icon {
+      position: absolute;
+      height: 16px;
+      width: 18px;
+      right: 80px;
+      top: 42%;
+      background: #fff url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/soutu/img/camera_new_5606e8f.png) no-repeat;
+    }
+
+    .get-code-btn {
+      font-size: 0.6em;
+      position: absolute;
+      right: 80px;
+      top: 53%;
+      padding: 5px;
+    }
+
+    .get-code-btn:hover {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .code-count-down {
+      font-size: 0.6em;
+      position: absolute;
+      right: 80px;
+      top: 53%;
+      padding: 5px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
     }
   </style>
 </head>
@@ -64,16 +119,17 @@
 <body>
   <div class="body-box">
     <div class="top"></div>
-    <div class="bottom"></div>
     <div class="regist-box">
       <h3>注册</h3>
-      <div>姓 名：<input type="text" v-model="userInfo.name" autocomplete="false"></div>
-      <div>性 别：<input type="text" v-model="userInfo.gender" autocomplete="false"></div>
-      <div>年 龄：<input type="number" v-model="userInfo.age" autocomplete="false"></div>
-      <div>邮 箱：<input type="text" v-model="userInfo.email" autocomplete="false"></div>
-      <div>手 机：<input type="text" v-model="userInfo.phone" autocomplete="false"></div>
-      <div class="reg-btn" @click="submit">注册</div>
+      <span class="phone-icon"></span>
+      <span class="get-code-btn" @click="getCode">获取验证码</span>
+      <div class="in-line"><input type="number" v-model="userInfo.phone" placeholder="手机号" autocomplete="off" maxlength=11></div>
+      <div class="in-line"><input type="number" v-model="userInfo.registCode" placeholder="验证码" autocomplete="off" maxlength=4></div>
+      <div class="in-line">
+        <span class="reg-btn" @click="submit">注册</span>
+      </div>
     </div>
+    <div class="bottom"></div>
   </div>
 </body>
 <script type="text/javascript">
@@ -82,41 +138,34 @@
     data: {
       version: '0.0.1',
       userInfo: {
-        name: '',
-        gender: '',
-        age: '',
-        email: '',
-        phone: ''
+        phone: '',
+        registCode: ''
       }
     },
     watch: {
-      'userInfo.name': function() {
-        console.log(this.userInfo.name);
+      'userInfo.phone': function() {
+        console.log(this.userInfo.phone);
       }
     },
     methods: {
+      getCode() {
+        alert("验证码:123456")
+      },
       submit: function() {
-        if ('' === this.userInfo.name) {
-          alert("填写用户名");
-          return;
-        }
-        if ('' === this.userInfo.gender) {
-          alert("填写性别")
-          return;
-        }
-        if ('' === this.userInfo.age) {
-          alert("填写年龄")
-          return;
-        }
-        if ('' === this.userInfo.email) {
-          alert("填写邮箱")
-          return;
-        }
         if ('' === this.userInfo.phone) {
           alert("填写用手机")
           return;
         }
+        if ('' === this.userInfo.registCode) {
+          alert("填写验证码")
+          return;
+        }
         console.log(this.userInfo);
+        axios.post("http://localhost/api/regist", this.userInfo).then(function(res) {
+          console.log(re);
+        }).catch(function(error) {
+          console.error(error);
+        })
       }
     },
     computed: {}
