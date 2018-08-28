@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+
+  <style media="screen">
+    .user-profile {
+      border: 0.5px solid red;
+    }
+
+    .demo-alert-box {
+      padding: 10px 20px;
+      background: #f3beb8;
+      border: 1px solid #f09898;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="body-box">
+    <title>{{title}}</title>
+    <div class="v1" id="v1">{{a}}</div>
+    <button @click="submit">提交</button>
+    <div id="example">
+      <p>Original message: "{{ message }}"</p>
+      <p>Computed reversed message: "{{ reversedMessage }}"</p>
+    </div>
+    <br>
+    <div id="watch-example">
+      <p>
+        Ask a question:
+        <input v-model="question">
+      </p>
+      <p>{{ answer }}</p>
+    </div>
+
+    <div v-if="Math.random() > 0.5">
+      Now you see me
+    </div>
+    <div v-else>
+      Now you don't
+    </div>
+    <br>
+    <template v-if="loginType === 'username'">
+      <label>Username</label>
+      <input placeholder="Enter your username">
+  </template>
+    <template v-else>
+      <label>Email</label>
+      <input placeholder="Enter your email address">
+  </template>
+    <h1 v-if="ok">Yes</h1>
+    <h1 v-else>No</h1>
+    <ul id="example-2">
+      <li v-for="(item, index) in items">
+        {{ title }} - {{ index }} - {{ item.message }}
+      </li>
+    </ul>
+
+    <div v-for="(value, key) in userInfo">
+      <div> <span class="user-profile">{{ key }}</span><span class="user-profile">{{ value }}</span></div>
+    </div>
+
+    <div id="ids-1">
+      <button @click="green">Add 1</button>
+    </div>
+    <a @click.once="doThis"><h3>去注册</h3></a>
+    <br> 用户：
+    <input @keyup.enter="submit"> 年龄： <input v-model.number="userInfo.age" type="number">
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <div id="blog-posts-events-demo">
+      <div :style="{ fontSize: postFontSize + 'em' }" v-on:enlarge-text="postFontSize += 0.1">
+        <blog-post v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></blog-post>
+      </div>
+    </div>
+
+    <alert-box>
+      Something bad happened.
+    </alert-box>
+  </div>
+</body>
+<script type="text/javascript">
+  // 定义一个名为 button-counter 的新组件
+  Vue.component('button-counter', {
+    data: function() {
+      return {
+        count: 0
+      }
+    },
+    template: '<button @click="count++">You clicked me {{ count }} times.</button>'
+  })
+
+  Vue.component('blog-post', {
+    props: ['post'],
+    template: `
+      <div class="blog-post">
+        <h3>{{ post.title }}</h3>
+        <button v-on:click="$emit('enlarge-text')">
+            addbig
+        </button>
+        <div v-html="post.content"></div>
+      </div>
+    `
+  })
+
+  Vue.component('alert-box', {
+    template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `
+  })
+
+  var vvm = new Vue({
+    el: '#body-box',
+    data: {
+      postFontSize: 1,
+      counter: 0,
+      title: '详情页',
+      message: 'Hello',
+      firstName: 'Foo',
+      lastName: 'Bar',
+      loginType: 'username',
+      a: '篡改系统调用',
+      ok: "ok",
+      question: '',
+      answer: "no answer",
+      userInfo: {
+        firstName: 'John',
+        lastName: 'Doe',
+        age: 18
+      },
+      items: [{
+          message: 'Foo'
+        },
+        {
+          message: 'Bar'
+        }
+      ],
+      posts: [{
+          id: 1,
+          title: 'My journey with Vue',
+          content: '<p>hello vue hello html</p>'
+        },
+        {
+          id: 2,
+          title: 'Blogging with Vue'
+        },
+        {
+          id: 3,
+          title: 'Why Vue is so fun'
+        }
+      ]
+    },
+    watch: {
+      // 如果 `question` 发生改变，这个函数就会运行
+      question: function(newQuestion, oldQuestion) {
+        this.answer = 'Waiting for you to stop typing...'
+        this.debouncedGetAnswer()
+      }
+    },
+    created: function() {
+      // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+      // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+      // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+      // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+      // 请参考：https://lodash.com/docs#debounce
+      this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+    },
+    //方法
+    methods: {
+      doThis: function(event) {
+        location.href = 'regist.html'
+      },
+      submit: function() {
+        alert("submit")
+      },
+      green: function(event) {
+        alert(event.target.tagName)
+      },
+      getAnswer: function() {
+        if (this.question.indexOf('?') === -1) {
+          this.answer = 'Questions usually contain a question mark. ;-)'
+          return
+        }
+        this.answer = 'Thinking...'
+        var vm = this
+        axios.get('http://112.126.92.227:8080/business/rest/getProvinceByCity/北京')
+          .then(function(response) {
+            vm.answer = _.capitalize(response.data)
+          })
+          .catch(function(error) {
+            vm.answer = 'Error! Could not reach the API. ' + error
+          })
+      }
+    },
+    //计算
+    computed: {
+      // 计算属性的 getter
+      reversedMessage: function() {
+        return this.message.split('').reverse().join('')
+      },
+      fullName: function() {
+        return this.firstName + ' ' + this.lastName
+      }
+    }
+  })
+</script>
+
+</html>

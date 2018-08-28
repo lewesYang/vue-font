@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <base target="_blank" />
-  <title>index</title>
+  <title>首页</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <style>
@@ -43,7 +44,7 @@
     position: fixed;
     background-color: #fff;
     top: 0;
-    width: 72%;
+    width: 80%;
     height: 8%;
     left: 50%;
     z-index: 99;
@@ -72,15 +73,29 @@
   .home-content {
     position: relative;
     background-color: #fff;
-    width: 72%;
+    width: 80%;
     top: 10%;
     height: 100%;
     left: 50%;
     transform: translateX(-50%);
   }
 
+  .big-img {
+    width: 100%
+  }
+
   .it-img {
-    width: 45%
+    width: 49%
+  }
+
+  .it-img:hover {
+    cursor: pointer;
+    box-shadow: 10px 10px 5px #888888;
+    z-index: 199;
+  }
+
+  .home-content-list>.right {
+    margin-left: 1.5%
   }
 
   .home-content-list {
@@ -103,15 +118,34 @@
     </div>
   </div>
   <div class="home-content">
-    <img src="img/index.png" alt="index">
+    <img class="big-img" src="img/index.png" alt="index">
     <div class="home-content-list">
-      <img class="it-img" src="img/it1.jpg" alt="t1">
-      <img class="it-img" src="img/it1.jpg" alt="t2">
-      <img class="it-img" src="img/it1.jpg" alt="t3">
-      <img class="it-img" src="img/it1.jpg" alt="t4">
-      <img class="it-img" src="img/it1.jpg" alt="t5">
+      <img class="it-img" src="img/it1.jpg" alt="t1" v-on:click="toVue">
+      <img class="it-img right" src="img/it1.jpg" alt="t2" v-on:click="toVue">
+      <img class="it-img" src="img/it1.jpg" alt="t3" v-on:click="toVue">
+      <img class="it-img right" src="img/it1.jpg" alt="t4" v-on:click="toVue">
+    </div>
+    <div id="app">
+      {{message}}
     </div>
   </div>
 </body>
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!'
+    }
+  })
+
+  var app2 = new Vue({
+    el: '.it-img',
+    methods: {
+      toVue: function() {
+        location.href = "html/vue.html"
+      }
+    }
+  })
+</script>
 
 </html>

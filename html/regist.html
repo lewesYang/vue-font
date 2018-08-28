@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #f8f8f8;
+      font-family: Microsoft YaHei, Helvetica, Arial, sans-serif;
+      color: #333;
+      font-size: 18px;
+      height: inherit;
+    }
+
+    .top {
+      height: 400px;
+      background-color: black;
+    }
+
+    .regist-box {
+      position: absolute;
+      height: 240px;
+      width: 30%;
+      background-color: #fff;
+      top: 20%;
+      left: 35%;
+      box-shadow: 1px 1px 1px 1px #888888;
+    }
+
+    input {
+      height: 30px;
+      width: 300px;
+    }
+
+    .reg-btn {
+      text-align: center;
+      width: 100px;
+      height: 30px;
+      border: solid 1px green;
+      background-color: green;
+      box-shadow: 1px 1px 1px 1px #888888;
+    }
+
+    .reg-btn:hover {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="body-box">
+    <div class="top"></div>
+    <div class="bottom"></div>
+    <div class="regist-box">
+      <h3>注册</h3>
+      <div>姓 名：<input type="text" v-model="userInfo.name" autocomplete="false"></div>
+      <div>性 别：<input type="text" v-model="userInfo.gender" autocomplete="false"></div>
+      <div>年 龄：<input type="number" v-model="userInfo.age" autocomplete="false"></div>
+      <div>邮 箱：<input type="text" v-model="userInfo.email" autocomplete="false"></div>
+      <div>手 机：<input type="text" v-model="userInfo.phone" autocomplete="false"></div>
+      <div class="reg-btn" @click="submit">注册</div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  var vw = new Vue({
+    el: '.body-box',
+    data: {
+      version: '0.0.1',
+      userInfo: {
+        name: '',
+        gender: '',
+        age: '',
+        email: '',
+        phone: ''
+      }
+    },
+    watch: {
+      'userInfo.name': function() {
+        console.log(this.userInfo.name);
+      }
+    },
+    methods: {
+      submit: function() {
+        if ('' === this.userInfo.name) {
+          alert("填写用户名");
+          return;
+        }
+        if ('' === this.userInfo.gender) {
+          alert("填写性别")
+          return;
+        }
+        if ('' === this.userInfo.age) {
+          alert("填写年龄")
+          return;
+        }
+        if ('' === this.userInfo.email) {
+          alert("填写邮箱")
+          return;
+        }
+        if ('' === this.userInfo.phone) {
+          alert("填写用手机")
+          return;
+        }
+        console.log(this.userInfo);
+      }
+    },
+    computed: {}
+  })
+</script>
+
+</html>
