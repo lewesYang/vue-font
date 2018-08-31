@@ -85,7 +85,7 @@
       background: #fff url(https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/static/protocol/https/soutu/img/camera_new_5606e8f.png) no-repeat;
     }
 
-    .get-code-btn {
+    .code-btn-show {
       font-size: 0.6em;
       position: absolute;
       right: 80px;
@@ -93,17 +93,25 @@
       padding: 5px;
     }
 
-    .get-code-btn:hover {
+    .code-wait-show {
+      font-size: 0.6em;
+      position: absolute;
+      right: 80px;
+      top: 54%;
+      padding: 5px;
+    }
+
+    .code-btn-hidden {
+      display: none;
+    }
+
+    .code-wait-hidden {
+      display: none;
+    }
+
+    .code-btn-show:hover {
       cursor: pointer;
       font-weight: bold;
-    }
-
-    .code-count-down {
-      font-size: 0.6em;
-      position: absolute;
-      right: 80px;
-      top: 53%;
-      padding: 5px;
     }
 
     input::-webkit-outer-spin-button,
@@ -123,7 +131,8 @@
     <div class="regist-box">
       <h3>注册</h3>
       <span class="phone-icon"></span>
-      <span class="get-code-btn" @click="getCode">获取验证码</span>
+      <span v-bind:class="[codeBtnShow ? 'code-btn-show':'code-btn-hidden']" @click="getCode">获取验证码</span>
+      <span v-bind:class="[codeWaitShow ? 'code-wait-show':'code-wait-hidden']">{{codeWaitTime}}</span>
       <div class="in-line"><input type="number" v-model="userInfo.phone" placeholder="手机号" autocomplete="off" maxlength=11></div>
       <div class="in-line"><input type="number" v-model="userInfo.registCode" placeholder="验证码" autocomplete="off" maxlength=4></div>
       <div class="in-line">
@@ -138,21 +147,44 @@
     el: '.body-box',
     data: {
       version: '0.0.1',
+      codeWaitTime: 60,
+      codeBtnShow: true,
+      codeWaitShow: false,
       userInfo: {
         phone: '',
         registCode: ''
       }
     },
     watch: {
-      'userInfo.phone': function() {
-        console.log(this.userInfo.phone);
+      'userInfo.phone': function() {},
+      codeWaitTime: function(newV, oldV) {
+        if (oldV === 30) {
+          alert("验证码：123456")
+        }
       }
     },
     methods: {
       getCode() {
-        alert("验证码:123456")
+        if ('' === this.userInfo.phone) {
+          alert("填写用手机")
+          return;
+        }
+        this.swatchCodeStatus();
+        this.codeWait();
       },
-      submit: function() {
+      //点击验证码 等待显示
+      async codeWait() {
+        for (this.codeWaitTime; this.codeWaitTime > 0; this.codeWaitTime--) {
+          await this.sleep(1000)
+        }
+        this.swatchCodeStatus();
+      },
+      swatchCodeStatus() {
+        let temp = this.codeBtnShow;
+        this.codeBtnShow = this.codeWaitShow;
+        this.codeWaitShow = temp;
+      },
+      submit() {
         if ('' === this.userInfo.phone) {
           alert("填写用手机")
           return;
@@ -167,7 +199,10 @@
         }).catch(function(error) {
           console.error(error);
         })
-      }
+      },
+      sleep(d) {
+        return new Promise((resolve) => setTimeout(resolve, d))
+      },
     },
     computed: {}
   })
