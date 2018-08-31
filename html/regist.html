@@ -169,7 +169,7 @@
           alert("填写用手机")
           return;
         }
-        this.swatchCodeStatus();
+        this.switchCodeStatus();
         this.codeWait();
       },
       //点击验证码 等待显示
@@ -177,9 +177,9 @@
         for (this.codeWaitTime; this.codeWaitTime > 0; this.codeWaitTime--) {
           await this.sleep(1000)
         }
-        this.swatchCodeStatus();
+        this.switchCodeStatus();
       },
-      swatchCodeStatus() {
+      switchCodeStatus() {
         let temp = this.codeBtnShow;
         this.codeBtnShow = this.codeWaitShow;
         this.codeWaitShow = temp;
