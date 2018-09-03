@@ -167,11 +167,6 @@
       question: function(newQuestion, oldQuestion) {
         this.answer = 'Waiting for you to stop typing...'
         this.debouncedGetAnswer()
-      },
-      codeWaitTime: function(newV, oldV) {
-        if (0 == newV) {
-          switchCodeT()
-        }
       }
     },
     created: function() {

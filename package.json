@@ -1,0 +1,22 @@
+{
+  "name": "vue-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lewesYang/vue-font.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lewesYang/vue-font/issues"
+  },
+  "homepage": "https://github.com/lewesYang/vue-font#readme",
+  "devDependencies": {
+    "webpack": "^4.17.1"
+  }
+}
